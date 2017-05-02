@@ -31,7 +31,7 @@ GRABBER_ERROR=false #INSTALLED_GRABBER=true
 SERVICE_ERROR=false
 
 
-LOCAL_SCRIPT_VERSION="20170501"
+LOCAL_SCRIPT_VERSION="20170502"
 REMOTE_SCRIPT_VERSION="$(curl -fLs https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/version.txt | grep ^"SCRIPT_VERSION" | cut -d'=' -f2)"
 URL_SCRIPT="https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/Tvheadend_Movistar-Spain.sh"
 
