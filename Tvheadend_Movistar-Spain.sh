@@ -40,6 +40,7 @@ if [ $LOCAL_SCRIPT_VERSION -lt $REMOTE_SCRIPT_VERSION ]; then
 	
 	sleep 6
 	
+	clear
 	printf "%-$(($COLUMNS-10))s"  " * Actualizando el script $(basename $0)"
 	wget -qO "$(basename $0)" "$URL_SCRIPT" 2>/dev/null
 	if [ $? -eq 0 ]; then
@@ -146,7 +147,7 @@ if [ "$1" = "-b" -o "$1" = "-B" ]; then
 		printf "%s$red%s$end%s\n" "[" "FAILED" "]"
 	fi
 	
-	printf "%-$(($COLUMNS-10))s"  " * Realizando backup de la configuración actual"
+	printf "%-$(($COLUMNS-10+1))s"  " * Realizando backup de la configuración actual"
 	SCRIPT_ROUTE="$PWD"
 	cd $TVHEADEND_CONFIG_DIR
 	if [ -f "$SCRIPT_ROUTE/Backup_configuracion_Tvheadend_$(date +"%Y-%m-%d").tar.xz" ]; then
@@ -158,7 +159,7 @@ if [ "$1" = "-b" -o "$1" = "-B" ]; then
 	fi
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
-		echo -e "\tBackup creado: $FILE"
+		printf "%s$blue%s$end\n" "   Backup creado: " "$FILE"
 	else
 		printf "%s$red%s$end%s\n" "[" "FAILED" "]"
 	fi
@@ -263,7 +264,7 @@ if [ -f $TVHEADEND_CONFIG_DIR/version.txt ]; then
 		echo "Se ha detectado una versión de la lista de canales previamente instalada."
 		printf "%s$blue%s$end\n\t$blue%s$end%s\t$blue%s$end%s\n" "- " "Lista de canales:" "Versión instalada: " "$LOCAL_LIST_VERSION" "Última versión disponible: " "$REMOTE_LIST_VERSION"
 		if [ $LOCAL_LIST_VERSION -lt $REMOTE_LIST_VERSION ]; then
-			echo "Hay disponible una versión más reciente de la lista de canales, se va a proceder a su descarga y posterior instalación."
+			echo -e "\nHay disponible una versión más reciente de la lista de canales, se va a proceder a su descarga y posterior instalación."
 			INSTALL_LIST=true
 			sleep 10
 		else
@@ -286,7 +287,7 @@ if [ -f $TVHEADEND_CONFIG_DIR/version.txt ]; then
 		echo "Se ha detectado una versión del grabber de Movistar+ previamente instalada."
 		printf "%s$blue%s$end\n\t$blue%s$end%s\t$blue%s$end%s\n" "- " "Grabber (EPG de canales):" "Versión instalada: " "$LOCAL_GRABBER_VERSION" "Última versión disponible: " "$REMOTE_GRABBER_VERSION"
 		if [ $LOCAL_GRABBER_VERSION -lt $REMOTE_GRABBER_VERSION ]; then
-			echo "Hay disponible una versión más reciente del grabber, se va a proceder a su descarga y posterior instalación."
+			echo -e "\nHay disponible una versión más reciente del grabber, se va a proceder a su descarga y posterior instalación."
 			INSTALL_GRABBER=true
 			sleep 10
 		else
@@ -626,17 +627,6 @@ else
 fi
 
 
-if [ "$LIST_ERROR" = true -a "$GRABBER_ERROR" = true ]; then
-	echo -e "LIST_VERSION=$LOCAL_LIST_VERSION\nGRABBER_VERSION=$LOCAL_GRABBER_VERSION" > $TVHEADEND_CONFIG_DIR/version.txt
-elif [ "$LIST_ERROR" = true -a "$GRABBER_ERROR" = false ]; then
-	echo -e "LIST_VERSION=$LOCAL_LIST_VERSION\nGRABBER_VERSION=$REMOTE_GRABBER_VERSION" > $TVHEADEND_CONFIG_DIR/version.txt
-elif [ "$LIST_ERROR" = false -a "$GRABBER_ERROR" = true ]; then
-	echo -e "LIST_VERSION=$REMOTE_LIST_VERSION\nGRABBER_VERSION=$LOCAL_GRABBER_VERSION" > $TVHEADEND_CONFIG_DIR/version.txt
-elif [ "$LIST_ERROR" = false -a "$GRABBER_ERROR" = false ]; then
-	echo -e "LIST_VERSION=$REMOTE_LIST_VERSION\nGRABBER_VERSION=$REMOTE_GRABBER_VERSION" > $TVHEADEND_CONFIG_DIR/version.txt
-fi
-
-
 if [ "$LIST_ERROR" = true -o "$GRABBER_ERROR" = true ]; then
 	printf "\n$red%s$end\n" "ERROR: El proceso no se ha completado correctamente."
 	printf "$red%s$end\n" "Revise los errores anteriores para intentar solucionarlo."
@@ -649,4 +639,26 @@ else
 fi
 
 
-rm "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" "tv_grab_movistar-spain"
+if [ "$INSTALL_LIST" = false ]; then
+	LIST_ERROR=true
+fi
+if [ "$INSTALL_GRABBER" = false ]; then
+	GRABBER_ERROR=true
+fi
+if [ "$LIST_ERROR" = true -a "$GRABBER_ERROR" = true ]; then
+	echo -e "LIST_VERSION=$LOCAL_LIST_VERSION\nGRABBER_VERSION=$LOCAL_GRABBER_VERSION" > $TVHEADEND_CONFIG_DIR/version.txt
+elif [ "$LIST_ERROR" = true -a "$GRABBER_ERROR" = false ]; then
+	echo -e "LIST_VERSION=$LOCAL_LIST_VERSION\nGRABBER_VERSION=$REMOTE_GRABBER_VERSION" > $TVHEADEND_CONFIG_DIR/version.txt
+elif [ "$LIST_ERROR" = false -a "$GRABBER_ERROR" = true ]; then
+	echo -e "LIST_VERSION=$REMOTE_LIST_VERSION\nGRABBER_VERSION=$LOCAL_GRABBER_VERSION" > $TVHEADEND_CONFIG_DIR/version.txt
+elif [ "$LIST_ERROR" = false -a "$GRABBER_ERROR" = false ]; then
+	echo -e "LIST_VERSION=$REMOTE_LIST_VERSION\nGRABBER_VERSION=$REMOTE_GRABBER_VERSION" > $TVHEADEND_CONFIG_DIR/version.txt
+fi
+
+
+if [ -f "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" ]; then
+	rm "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz"
+fi
+if [ -f "tv_grab_movistar-spain" ]; then
+	rm "tv_grab_movistar-spain"
+fi
