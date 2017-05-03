@@ -21,6 +21,12 @@ if [[ $(id -u) -ne 0 ]]; then
 fi
 
 
+if [ -f "Tvheadend_Movistar-Spain.log" ]; then
+	mv "Tvheadend_Movistar-Spain.log" "Tvheadend_Movistar-Spain.old.log" 2>>Tvheadend_Movistar-Spain.log
+	rm "Tvheadend_Movistar-Spain.log" 2>>Tvheadend_Movistar-Spain.log
+fi
+
+
 if [[ -z "$COLUMNS" ]]; then
 	COLUMNS=80
 fi
@@ -32,8 +38,8 @@ SERVICE_ERROR=false
 
 
 LOCAL_SCRIPT_VERSION="20170502"
-REMOTE_SCRIPT_VERSION="$(curl -fLs https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/version.txt | grep ^"SCRIPT_VERSION" | cut -d'=' -f2)"
-URL_SCRIPT="https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/Tvheadend_Movistar-Spain.sh"
+REMOTE_SCRIPT_VERSION="$(curl -fLs https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/version.txt | grep ^"SCRIPT_VERSION" | cut -d'=' -f2)" 2>>Tvheadend_Movistar-Spain.log
+URL_SCRIPT="https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/Tvheadend_Movistar-Spain.sh" 2>>Tvheadend_Movistar-Spain.log
 
 if [ $LOCAL_SCRIPT_VERSION -lt $REMOTE_SCRIPT_VERSION ]; then
 	echo "Hay disponible una versión más reciente del script, se va a proceder a su descarga."
@@ -42,10 +48,10 @@ if [ $LOCAL_SCRIPT_VERSION -lt $REMOTE_SCRIPT_VERSION ]; then
 	
 	clear
 	printf "%-$(($COLUMNS-10))s"  " * Actualizando el script $(basename $0)"
-	wget -qO "$(basename $0)" "$URL_SCRIPT" 2>/dev/null
+	wget -qO "$(basename $0)" "$URL_SCRIPT" 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
-		chmod +x "$(basename $0)" 2>/dev/null
+		chmod +x "$(basename $0)" 2>>Tvheadend_Movistar-Spain.log
 		echo -e "\nScript actualizado correctamente.\nPor favor, vuelva a ejecutar el script de nuevo."
 	else
 		printf "%s$red%s$end%s\n" "[" "FAILED" "]"
@@ -98,27 +104,27 @@ done
 
 case $SYSTEM in
 	1)
-		TVHEADEND_SERVICE="$(synoservicecfg --list | grep tvheadend)" #"pkgctl-tvheadend-testing"
+		TVHEADEND_SERVICE="$(synoservicecfg --list | grep tvheadend)" 2>>Tvheadend_Movistar-Spain.log #"pkgctl-tvheadend-testing"
 		if [ $? -ne 0 ]; then
 			SERVICES_MANAGEMENT="OLD"
 		else
 			SERVICES_MANAGEMENT="NEW"
 		fi
-		TVHEADEND_USER="$(cut -d: -f1 /etc/passwd | grep tvheadend)" #"tvheadend-testing"
-		TVHEADEND_GROUP="$(id -gn $TVHEADEND_USER)" #"users"
+		TVHEADEND_USER="$(cut -d: -f1 /etc/passwd | grep tvheadend)" 2>>Tvheadend_Movistar-Spain.log #"tvheadend-testing"
+		TVHEADEND_GROUP="$(id -gn $TVHEADEND_USER)" 2>>Tvheadend_Movistar-Spain.log #"users"
 		TVHEADEND_PERMISSIONS="700" #"u=rwX,g=,o="
-		TVHEADEND_CONFIG_DIR="/var/packages/$(ls /var/packages/ | grep tvheadend)/target/var" #"/var/packages/tvheadend-testing/target/var"
+		TVHEADEND_CONFIG_DIR="/var/packages/$(ls /var/packages/ | grep tvheadend)/target/var" 2>>Tvheadend_Movistar-Spain.log #"/var/packages/tvheadend-testing/target/var"
 		TVHEADEND_GRABBER_DIR="/usr/local/bin";;
 	2)
-		TVHEADEND_SERVICE="$(systemctl list-unit-files --type=service | grep tvheadend | tr -s ' ' | cut -d' ' -f1)" #"service.tvheadend42.service"
+		TVHEADEND_SERVICE="$(systemctl list-unit-files --type=service | grep tvheadend | tr -s ' ' | cut -d' ' -f1)" 2>>Tvheadend_Movistar-Spain.log #"service.tvheadend42.service"
 		TVHEADEND_USER="root"
 		TVHEADEND_GROUP="video"
 		TVHEADEND_PERMISSIONS="700" #"u=rwX,g=,o="
-		TVHEADEND_CONFIG_DIR="/storage/.kodi/userdata/addon_data/$(ls /storage/.kodi/userdata/addon_data/ | grep tvheadend)" #"/storage/.kodi/userdata/addon_data/service.tvheadend42"
-		TVHEADEND_GRABBER_DIR="/storage/.kodi/addons/$(ls /storage/.kodi/addons/ | grep tvheadend)/bin";; #"/storage/.kodi/addons/service.tvheadend42/bin"
+		TVHEADEND_CONFIG_DIR="/storage/.kodi/userdata/addon_data/$(ls /storage/.kodi/userdata/addon_data/ | grep tvheadend)" 2>>Tvheadend_Movistar-Spain.log #"/storage/.kodi/userdata/addon_data/service.tvheadend42"
+		TVHEADEND_GRABBER_DIR="/storage/.kodi/addons/$(ls /storage/.kodi/addons/ | grep tvheadend)/bin" 2>>Tvheadend_Movistar-Spain.log;; #"/storage/.kodi/addons/service.tvheadend42/bin"
 	3)
-		TVHEADEND_SERVICE="$(systemctl list-unit-files --type=service | grep tvheadend | tr -s ' ' | cut -d' ' -f1)" #"tvheadend.service"
-		TVHEADEND_USER="$(cut -d: -f1 /etc/passwd | grep -E 'tvheadend|hts')" #"hts"
+		TVHEADEND_SERVICE="$(systemctl list-unit-files --type=service | grep tvheadend | tr -s ' ' | cut -d' ' -f1)" 2>>Tvheadend_Movistar-Spain.log #"tvheadend.service"
+		TVHEADEND_USER="$(cut -d: -f1 /etc/passwd | grep -E 'tvheadend|hts')" 2>>Tvheadend_Movistar-Spain.log #"hts"
 		TVHEADEND_GROUP="video" #"$(id -gn $TVHEADEND_USER)"
 		TVHEADEND_PERMISSIONS="700" #"u=rwX,g=,o="
 		TVHEADEND_CONFIG_DIR="/home/hts/.hts/tvheadend"
@@ -132,14 +138,14 @@ if [ "$1" = "-b" -o "$1" = "-B" ]; then
 	case $SYSTEM in
 		1)
 			if [ "$SERVICES_MANAGEMENT" = "OLD" ]; then
-				"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" stop 1>/dev/null 2>&1
+				"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" stop 1>Tvheadend_Movistar-Spain.log 2>&1
 			else
-				stop -q $TVHEADEND_SERVICE 2>/dev/null
+				stop -q $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log
 			fi;;
 		2)
-			systemctl stop $TVHEADEND_SERVICE 2>/dev/null;;
+			systemctl stop $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 		3)
-			systemctl stop $TVHEADEND_SERVICE 2>/dev/null;;
+			systemctl stop $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 	esac
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
@@ -152,10 +158,10 @@ if [ "$1" = "-b" -o "$1" = "-B" ]; then
 	cd $TVHEADEND_CONFIG_DIR
 	if [ -f "$SCRIPT_ROUTE/Backup_configuracion_Tvheadend_$(date +"%Y-%m-%d").tar.xz" ]; then
 		FILE="Backup_configuracion_Tvheadend_$(date +"%Y-%m-%d--%H-%M-%S").tar.xz"
-		tar -cJf $SCRIPT_ROUTE/$FILE channel epggrab/xmltv input/dvb Picons
+		tar -cJf $SCRIPT_ROUTE/$FILE channel epggrab/xmltv input/dvb Picons 2>>Tvheadend_Movistar-Spain.log
 	else
 		FILE="Backup_configuracion_Tvheadend_$(date +"%Y-%m-%d").tar.xz"
-		tar -cJf $SCRIPT_ROUTE/$FILE channel epggrab/xmltv input/dvb Picons
+		tar -cJf $SCRIPT_ROUTE/$FILE channel epggrab/xmltv input/dvb Picons 2>>Tvheadend_Movistar-Spain.log
 	fi
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
@@ -168,14 +174,14 @@ if [ "$1" = "-b" -o "$1" = "-B" ]; then
 	case $SYSTEM in
 		1)
 			if [ "$SERVICES_MANAGEMENT" = "OLD" ]; then
-				"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" start 1>/dev/null 2>&1
+				"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" start 1>Tvheadend_Movistar-Spain.log 2>&1
 			else
-				start -q $TVHEADEND_SERVICE 2>/dev/null
+				start -q $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log
 			fi;;
 		2)
-			systemctl start $TVHEADEND_SERVICE 2>/dev/null;;
+			systemctl start $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 		3)
-			systemctl start $TVHEADEND_SERVICE 2>/dev/null;;
+			systemctl start $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 	esac
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
@@ -188,9 +194,9 @@ fi
 
 
 if [[ -d $TVHEADEND_CONFIG_DIR/channel ]]; then
-	TVHEADEND_CHANNEL_USER=$(stat -c %U $TVHEADEND_CONFIG_DIR/channel) 2>/dev/null
-	TVHEADEND_CHANNEL_GROUP=$(stat -c %G $TVHEADEND_CONFIG_DIR/channel) 2>/dev/null
-	TVHEADEND_CHANNEL_PERMISSIONS=$(stat -c %a $TVHEADEND_CONFIG_DIR/channel) 2>/dev/null
+	TVHEADEND_CHANNEL_USER=$(stat -c %U $TVHEADEND_CONFIG_DIR/channel) 2>>Tvheadend_Movistar-Spain.log
+	TVHEADEND_CHANNEL_GROUP=$(stat -c %G $TVHEADEND_CONFIG_DIR/channel) 2>>Tvheadend_Movistar-Spain.log
+	TVHEADEND_CHANNEL_PERMISSIONS=$(stat -c %a $TVHEADEND_CONFIG_DIR/channel) 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		TVHEADEND_CHANNEL_USER=$TVHEADEND_USER
 		TVHEADEND_CHANNEL_GROUP=$TVHEADEND_GROUP
@@ -203,9 +209,9 @@ else
 fi
 
 if [[ -d $TVHEADEND_CONFIG_DIR/epggrab ]]; then
-	TVHEADEND_EPGGRAB_USER=$(stat -c %U $TVHEADEND_CONFIG_DIR/epggrab) 2>/dev/null
-	TVHEADEND_EPGGRAB_GROUP=$(stat -c %G $TVHEADEND_CONFIG_DIR/epggrab) 2>/dev/null
-	TVHEADEND_EPGGRAB_PERMISSIONS=$(stat -c %a $TVHEADEND_CONFIG_DIR/epggrab) 2>/dev/null
+	TVHEADEND_EPGGRAB_USER=$(stat -c %U $TVHEADEND_CONFIG_DIR/epggrab) 2>>Tvheadend_Movistar-Spain.log
+	TVHEADEND_EPGGRAB_GROUP=$(stat -c %G $TVHEADEND_CONFIG_DIR/epggrab) 2>>Tvheadend_Movistar-Spain.log
+	TVHEADEND_EPGGRAB_PERMISSIONS=$(stat -c %a $TVHEADEND_CONFIG_DIR/epggrab) 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		TVHEADEND_EPGGRAB_USER=$TVHEADEND_USER
 		TVHEADEND_EPGGRAB_GROUP=$TVHEADEND_GROUP
@@ -218,9 +224,9 @@ else
 fi
 
 if [[ -d $TVHEADEND_CONFIG_DIR/input ]]; then
-	TVHEADEND_INPUT_USER=$(stat -c %U $TVHEADEND_CONFIG_DIR/input) 2>/dev/null
-	TVHEADEND_INPUT_GROUP=$(stat -c %G $TVHEADEND_CONFIG_DIR/input) 2>/dev/null
-	TVHEADEND_INPUT_PERMISSIONS=$(stat -c %a $TVHEADEND_CONFIG_DIR/input) 2>/dev/null
+	TVHEADEND_INPUT_USER=$(stat -c %U $TVHEADEND_CONFIG_DIR/input) 2>>Tvheadend_Movistar-Spain.log
+	TVHEADEND_INPUT_GROUP=$(stat -c %G $TVHEADEND_CONFIG_DIR/input) 2>>Tvheadend_Movistar-Spain.log
+	TVHEADEND_INPUT_PERMISSIONS=$(stat -c %a $TVHEADEND_CONFIG_DIR/input) 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		TVHEADEND_INPUT_USER=$TVHEADEND_USER
 		TVHEADEND_INPUT_GROUP=$TVHEADEND_GROUP
@@ -233,9 +239,9 @@ else
 fi
 
 if [[ -d $TVHEADEND_CONFIG_DIR/Picons ]]; then
-	TVHEADEND_PICONS_USER=$(stat -c %U $TVHEADEND_CONFIG_DIR/Picons) 2>/dev/null
-	TVHEADEND_PICONS_GROUP=$(stat -c %G $TVHEADEND_CONFIG_DIR/Picons) 2>/dev/null
-	TVHEADEND_PICONS_PERMISSIONS=$(stat -c %a $TVHEADEND_CONFIG_DIR/Picons) 2>/dev/null
+	TVHEADEND_PICONS_USER=$(stat -c %U $TVHEADEND_CONFIG_DIR/Picons) 2>>Tvheadend_Movistar-Spain.log
+	TVHEADEND_PICONS_GROUP=$(stat -c %G $TVHEADEND_CONFIG_DIR/Picons) 2>>Tvheadend_Movistar-Spain.log
+	TVHEADEND_PICONS_PERMISSIONS=$(stat -c %a $TVHEADEND_CONFIG_DIR/Picons) 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		TVHEADEND_PICONS_USER=$TVHEADEND_USER
 		TVHEADEND_PICONS_GROUP=$TVHEADEND_GROUP
@@ -248,16 +254,16 @@ else
 fi
 
 
-REMOTE_LIST_VERSION="$(curl -fLs https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/version.txt | grep ^"LIST_VERSION" | cut -d'=' -f2)"
-URL_LIST="https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/files/Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz"
+REMOTE_LIST_VERSION="$(curl -fLs https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/version.txt | grep ^"LIST_VERSION" | cut -d'=' -f2)" 2>>Tvheadend_Movistar-Spain.log
+URL_LIST="https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/files/Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" 2>>Tvheadend_Movistar-Spain.log
 
-REMOTE_GRABBER_VERSION="$(curl -fLs https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/version.txt | grep ^"GRABBER_VERSION" | cut -d'=' -f2)"
-URL_GRABBER="https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/files/tv_grab_movistar-spain"
+REMOTE_GRABBER_VERSION="$(curl -fLs https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/version.txt | grep ^"GRABBER_VERSION" | cut -d'=' -f2)" 2>>Tvheadend_Movistar-Spain.log
+URL_GRABBER="https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/files/tv_grab_movistar-spain" 2>>Tvheadend_Movistar-Spain.log
 
 
 if [ -f $TVHEADEND_CONFIG_DIR/version.txt ]; then
-	LOCAL_LIST_VERSION="$(grep ^"LIST_VERSION" $TVHEADEND_CONFIG_DIR/version.txt | cut -d'=' -f2)"
-	LOCAL_GRABBER_VERSION="$(grep ^"GRABBER_VERSION" $TVHEADEND_CONFIG_DIR/version.txt | cut -d'=' -f2)"
+	LOCAL_LIST_VERSION="$(grep ^"LIST_VERSION" $TVHEADEND_CONFIG_DIR/version.txt | cut -d'=' -f2)" 2>>Tvheadend_Movistar-Spain.log
+	LOCAL_GRABBER_VERSION="$(grep ^"GRABBER_VERSION" $TVHEADEND_CONFIG_DIR/version.txt | cut -d'=' -f2)" 2>>Tvheadend_Movistar-Spain.log
 	
 	if [ $LOCAL_LIST_VERSION -gt 0 ]; then
 		clear
@@ -330,14 +336,14 @@ printf "%-$(($COLUMNS-10))s"  " * Deteniendo Tvheadend"
 case $SYSTEM in
 	1)
 		if [ "$SERVICES_MANAGEMENT" = "OLD" ]; then
-			"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" stop 1>/dev/null 2>&1
+			"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" stop 1>Tvheadend_Movistar-Spain.log 2>&1
 		else
-			stop -q $TVHEADEND_SERVICE 2>/dev/null
+			stop -q $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log
 		fi;;
 	2)
-		systemctl stop $TVHEADEND_SERVICE 2>/dev/null;;
+		systemctl stop $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 	3)
-		systemctl stop $TVHEADEND_SERVICE 2>/dev/null;;
+		systemctl stop $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 esac
 if [ $? -eq 0 ]; then
 	printf "%s$green%s$end%s\n" "[" "  OK  " "]"
@@ -349,7 +355,7 @@ fi
 
 if [ "$INSTALL_LIST" = true ]; then
 	printf "%-$(($COLUMNS-10))s"  " * Descargando lista de canales"
-	wget -qO "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" "$URL_LIST" 2>/dev/null
+	wget -qO "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" "$URL_LIST" 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
 	else
@@ -360,7 +366,7 @@ if [ "$INSTALL_LIST" = true ]; then
 	
 	
 	printf "%-$(($COLUMNS-10+1))s"  " * Eliminando la configuración actual"
-	rm -rf $TVHEADEND_CONFIG_DIR/channel $TVHEADEND_CONFIG_DIR/input/dvb $TVHEADEND_CONFIG_DIR/Picons 2>/dev/null
+	rm -rf $TVHEADEND_CONFIG_DIR/channel $TVHEADEND_CONFIG_DIR/input/dvb $TVHEADEND_CONFIG_DIR/Picons 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
 	else
@@ -370,8 +376,8 @@ if [ "$INSTALL_LIST" = true ]; then
 	
 	
 	printf "%-$(($COLUMNS-10+1))s"  " * Aplicando la configuración nueva"
-	tar -Jxf "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" -C $TVHEADEND_CONFIG_DIR channel input Picons 2>/dev/null #--strip-components=1
-	if [ $? -eq 0 ]; then
+	tar -Jxf "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" -C $TVHEADEND_CONFIG_DIR channel input Picons 2>>Tvheadend_Movistar-Spain.log #--strip-components=1
+	if [ $? -eq 0 -o $SYSTEM -eq 2 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
 	else
 		printf "%s$red%s$end%s\n" "[" "FAILED" "]"
@@ -381,39 +387,39 @@ if [ "$INSTALL_LIST" = true ]; then
 	
 	printf "%-$(($COLUMNS-10+1))s"  " * Aplicando permisos a los ficheros de configuración"
 	ERROR=false
-	chown -R $TVHEADEND_CHANNEL_USER:$TVHEADEND_CHANNEL_GROUP $TVHEADEND_CONFIG_DIR/channel 2>/dev/null
+	chown -R $TVHEADEND_CHANNEL_USER:$TVHEADEND_CHANNEL_GROUP $TVHEADEND_CONFIG_DIR/channel 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	find $TVHEADEND_CONFIG_DIR/channel -type d -exec chmod $TVHEADEND_CHANNEL_PERMISSIONS 2>/dev/null {} \;
+	find $TVHEADEND_CONFIG_DIR/channel -type d -exec chmod $TVHEADEND_CHANNEL_PERMISSIONS 2>>Tvheadend_Movistar-Spain.log {} \;
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	find $TVHEADEND_CONFIG_DIR/channel -type f -exec chmod $(($TVHEADEND_CHANNEL_PERMISSIONS-100)) 2>/dev/null {} \;
+	find $TVHEADEND_CONFIG_DIR/channel -type f -exec chmod $(($TVHEADEND_CHANNEL_PERMISSIONS-100)) 2>>Tvheadend_Movistar-Spain.log {} \;
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	chown -R $TVHEADEND_INPUT_USER:$TVHEADEND_INPUT_GROUP $TVHEADEND_CONFIG_DIR/input 2>/dev/null
+	chown -R $TVHEADEND_INPUT_USER:$TVHEADEND_INPUT_GROUP $TVHEADEND_CONFIG_DIR/input 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	find $TVHEADEND_CONFIG_DIR/input -type d -exec chmod $TVHEADEND_INPUT_PERMISSIONS 2>/dev/null {} \;
+	find $TVHEADEND_CONFIG_DIR/input -type d -exec chmod $TVHEADEND_INPUT_PERMISSIONS 2>>Tvheadend_Movistar-Spain.log {} \;
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	find $TVHEADEND_CONFIG_DIR/input -type f -exec chmod $(($TVHEADEND_INPUT_PERMISSIONS-100)) 2>/dev/null {} \;
+	find $TVHEADEND_CONFIG_DIR/input -type f -exec chmod $(($TVHEADEND_INPUT_PERMISSIONS-100)) 2>>Tvheadend_Movistar-Spain.log {} \;
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	chown -R $TVHEADEND_PICONS_USER:$TVHEADEND_PICONS_GROUP $TVHEADEND_CONFIG_DIR/Picons 2>/dev/null
+	chown -R $TVHEADEND_PICONS_USER:$TVHEADEND_PICONS_GROUP $TVHEADEND_CONFIG_DIR/Picons 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	find $TVHEADEND_CONFIG_DIR/Picons -type d -exec chmod $TVHEADEND_PICONS_PERMISSIONS 2>/dev/null {} \;
+	find $TVHEADEND_CONFIG_DIR/Picons -type d -exec chmod $TVHEADEND_PICONS_PERMISSIONS 2>>Tvheadend_Movistar-Spain.log {} \;
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	find $TVHEADEND_CONFIG_DIR/Picons -type f -exec chmod $(($TVHEADEND_PICONS_PERMISSIONS-100)) 2>/dev/null {} \;
+	find $TVHEADEND_CONFIG_DIR/Picons -type f -exec chmod $(($TVHEADEND_PICONS_PERMISSIONS-100)) 2>>Tvheadend_Movistar-Spain.log {} \;
 	if [ $? -eq 0 -a $ERROR = "false" ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
 	else
@@ -424,19 +430,19 @@ if [ "$INSTALL_LIST" = true ]; then
 	
 	printf "%-$(($COLUMNS-10))s"  " * Configurando Tvheadend"
 	ERROR=false
-	sed -i '/"chiconscheme": .*,/d' $TVHEADEND_CONFIG_DIR/config 2>/dev/null
+	sed -i '/"chiconscheme": .*,/d' $TVHEADEND_CONFIG_DIR/config 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	sed -i '/"piconpath": .*,/d' $TVHEADEND_CONFIG_DIR/config 2>/dev/null
+	sed -i '/"piconpath": .*,/d' $TVHEADEND_CONFIG_DIR/config 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	sed -i '/"piconscheme": .*,/d' $TVHEADEND_CONFIG_DIR/config 2>/dev/null
+	sed -i '/"piconscheme": .*,/d' $TVHEADEND_CONFIG_DIR/config 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	sed -i 's/"prefer_picon": .*,/"prefer_picon": false,\n\t"chiconscheme": 0,\n\t"piconpath": "file:\/\/\/var\/packages\/tvheadend-testing\/target\/var\/Picons",\n\t"piconscheme": 1,/g' $TVHEADEND_CONFIG_DIR/config 2>/dev/null
+	sed -i 's/"prefer_picon": .*,/"prefer_picon": false,\n\t"chiconscheme": 0,\n\t"piconpath": "file:\/\/\/var\/packages\/tvheadend-testing\/target\/var\/Picons",\n\t"piconscheme": 1,/g' $TVHEADEND_CONFIG_DIR/config 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -eq 0 -a $ERROR = "false" ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
 	else
@@ -449,7 +455,7 @@ fi
 if [ "$INSTALL_GRABBER" = true ]; then
 	if [ ! -f "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" ]; then
 		printf "%-$(($COLUMNS-10))s"  " * Descargando lista de canales"
-		wget -qO "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" "$URL_LIST" 2>/dev/null
+		wget -qO "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" "$URL_LIST" 2>>Tvheadend_Movistar-Spain.log
 		if [ $? -eq 0 ]; then
 			printf "%s$green%s$end%s\n" "[" "  OK  " "]"
 		else
@@ -460,7 +466,7 @@ if [ "$INSTALL_GRABBER" = true ]; then
 	fi
 	
 	printf "%-$(($COLUMNS-10))s"  " * Descargando grabber de Movistar+"
-	wget -qO "tv_grab_movistar-spain" "$URL_GRABBER" 2>/dev/null
+	wget -qO "tv_grab_movistar-spain" "$URL_GRABBER" 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
 	else
@@ -471,54 +477,54 @@ if [ "$INSTALL_GRABBER" = true ]; then
 	
 	printf "%-$(($COLUMNS-10))s"  " * Instalando grabber de Movistar+"
 	if [ -f /usr/bin/tv_grab_movistar-spain ]; then
-		rm /usr/bin/tv_grab_movistar-spain 2>/dev/null
+		rm /usr/bin/tv_grab_movistar-spain 2>>Tvheadend_Movistar-Spain.log
 	fi
 	ERROR=false
-	rm -rf $TVHEADEND_CONFIG_DIR/epggrab/xmltv 2>/dev/null
+	rm -rf $TVHEADEND_CONFIG_DIR/epggrab/xmltv 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	tar -Jxf "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" -C $TVHEADEND_CONFIG_DIR epggrab 2>/dev/null
+	tar -Jxf "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" -C $TVHEADEND_CONFIG_DIR epggrab 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
 	if [ $SYSTEM -eq 2 ]; then
-		sed -i -- "s,/usr/local/bin,$TVHEADEND_GRABBER_DIR,g" $TVHEADEND_CONFIG_DIR/epggrab/xmltv/channels/* epggrab 2>/dev/null
+		sed -i -- "s,/usr/local/bin,$TVHEADEND_GRABBER_DIR,g" $TVHEADEND_CONFIG_DIR/epggrab/xmltv/channels/* epggrab 2>>Tvheadend_Movistar-Spain.log
 		if [ $? -ne 0 ]; then
 			ERROR=true
 		fi
 	fi
-	chown -R $TVHEADEND_EPGGRAB_USER:$TVHEADEND_EPGGRAB_GROUP $TVHEADEND_CONFIG_DIR/epggrab 2>/dev/null
+	chown -R $TVHEADEND_EPGGRAB_USER:$TVHEADEND_EPGGRAB_GROUP $TVHEADEND_CONFIG_DIR/epggrab 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	find $TVHEADEND_CONFIG_DIR/epggrab -type d -exec chmod $TVHEADEND_EPGGRAB_PERMISSIONS 2>/dev/null {} \;
+	find $TVHEADEND_CONFIG_DIR/epggrab -type d -exec chmod $TVHEADEND_EPGGRAB_PERMISSIONS 2>>Tvheadend_Movistar-Spain.log {} \;
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	find $TVHEADEND_CONFIG_DIR/epggrab -type f -exec chmod $(($TVHEADEND_EPGGRAB_PERMISSIONS-100)) 2>/dev/null {} \;
+	find $TVHEADEND_CONFIG_DIR/epggrab -type f -exec chmod $(($TVHEADEND_EPGGRAB_PERMISSIONS-100)) 2>>Tvheadend_Movistar-Spain.log {} \;
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
 	if [ ! -d $TVHEADEND_GRABBER_DIR ]; then
-		mkdir -p $TVHEADEND_GRABBER_DIR 2>/dev/null
+		mkdir -p $TVHEADEND_GRABBER_DIR 2>>Tvheadend_Movistar-Spain.log
 	fi
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	cp tv_grab_movistar-spain $TVHEADEND_GRABBER_DIR/ 2>/dev/null
+	cp tv_grab_movistar-spain $TVHEADEND_GRABBER_DIR/ 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	chown $TVHEADEND_USER:$TVHEADEND_GROUP $TVHEADEND_GRABBER_DIR/tv_grab_movistar-spain 2>/dev/null
+	chown $TVHEADEND_USER:$TVHEADEND_GROUP $TVHEADEND_GRABBER_DIR/tv_grab_movistar-spain 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	chmod $(($TVHEADEND_PERMISSIONS-100)) $TVHEADEND_GRABBER_DIR/tv_grab_movistar-spain 2>/dev/null
+	chmod $(($TVHEADEND_PERMISSIONS-100)) $TVHEADEND_GRABBER_DIR/tv_grab_movistar-spain 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
-	chmod +rx $TVHEADEND_GRABBER_DIR/tv_grab_movistar-spain 2>/dev/null
+	chmod +rx $TVHEADEND_GRABBER_DIR/tv_grab_movistar-spain 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -eq 0 -a $ERROR = "false" ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
 	else
@@ -531,14 +537,14 @@ if [ "$INSTALL_GRABBER" = true ]; then
 	case $SYSTEM in
 		1)
 			if [ "$SERVICES_MANAGEMENT" = "OLD" ]; then
-				"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" start 1>/dev/null 2>&1
+				"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" start 1>Tvheadend_Movistar-Spain.log 2>&1
 			else
-				start -q $TVHEADEND_SERVICE 2>/dev/null
+				start -q $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log
 			fi;;
 		2)
-			systemctl start $TVHEADEND_SERVICE 2>/dev/null;;
+			systemctl start $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 		3)
-			systemctl start $TVHEADEND_SERVICE 2>/dev/null;;
+			systemctl start $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 	esac
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
@@ -570,14 +576,14 @@ if [ "$INSTALL_GRABBER" = true ]; then
 	case $SYSTEM in
 		1)
 			if [ "$SERVICES_MANAGEMENT" = "OLD" ]; then
-				"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" stop 1>/dev/null 2>&1
+				"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" stop 1>Tvheadend_Movistar-Spain.log 2>&1
 			else
-				stop -q $TVHEADEND_SERVICE 2>/dev/null
+				stop -q $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log
 			fi;;
 		2)
-			systemctl stop $TVHEADEND_SERVICE 2>/dev/null;;
+			systemctl stop $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 		3)
-			systemctl stop $TVHEADEND_SERVICE 2>/dev/null;;
+			systemctl stop $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 	esac
 	if [ $? -eq 0 ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
@@ -589,14 +595,14 @@ if [ "$INSTALL_GRABBER" = true ]; then
 	
 	printf "%-$(($COLUMNS-10))s"  " * Habilitando grabber de Movistar+"
 	ERROR=false
-	sed -i '/tv_grab_movistar-spain/,/},/d' $TVHEADEND_CONFIG_DIR/epggrab/config 2>/dev/null
+	sed -i '/tv_grab_movistar-spain/,/},/d' $TVHEADEND_CONFIG_DIR/epggrab/config 2>>Tvheadend_Movistar-Spain.log
 	if [ $? -ne 0 ]; then
 		ERROR=true
 	fi
 	if [ $SYSTEM -eq 2 ]; then
-		sed -i 's/"modules": {/"modules": {\n\t\t"\/storage\/.kodi\/addons\/service.tvheadend42\/bin\/tv_grab_movistar-spain": {\n\t\t\t"class": "epggrab_mod_int_xmltv",\n\t\t\t"dn_chnum": 0,\n\t\t\t"name": "XMLTV: Movistar+",\n\t\t\t"type": "Internal",\n\t\t\t"enabled": true,\n\t\t\t"priority": 3\n\t\t},/g' $TVHEADEND_CONFIG_DIR/epggrab/config 2>/dev/null
+		sed -i 's/"modules": {/"modules": {\n\t\t"\/storage\/.kodi\/addons\/service.tvheadend42\/bin\/tv_grab_movistar-spain": {\n\t\t\t"class": "epggrab_mod_int_xmltv",\n\t\t\t"dn_chnum": 0,\n\t\t\t"name": "XMLTV: Movistar+",\n\t\t\t"type": "Internal",\n\t\t\t"enabled": true,\n\t\t\t"priority": 3\n\t\t},/g' $TVHEADEND_CONFIG_DIR/epggrab/config 2>>Tvheadend_Movistar-Spain.log
 	else
-		sed -i 's/"modules": {/"modules": {\n\t\t"\/usr\/local\/bin\/tv_grab_movistar-spain": {\n\t\t\t"class": "epggrab_mod_int_xmltv",\n\t\t\t"dn_chnum": 0,\n\t\t\t"name": "XMLTV: Movistar+",\n\t\t\t"type": "Internal",\n\t\t\t"enabled": true,\n\t\t\t"priority": 3\n\t\t},/g' $TVHEADEND_CONFIG_DIR/epggrab/config 2>/dev/null
+		sed -i 's/"modules": {/"modules": {\n\t\t"\/usr\/local\/bin\/tv_grab_movistar-spain": {\n\t\t\t"class": "epggrab_mod_int_xmltv",\n\t\t\t"dn_chnum": 0,\n\t\t\t"name": "XMLTV: Movistar+",\n\t\t\t"type": "Internal",\n\t\t\t"enabled": true,\n\t\t\t"priority": 3\n\t\t},/g' $TVHEADEND_CONFIG_DIR/epggrab/config 2>>Tvheadend_Movistar-Spain.log
 	fi
 	if [ $? -eq 0 -a $ERROR = "false" ]; then
 		printf "%s$green%s$end%s\n" "[" "  OK  " "]"
@@ -610,14 +616,14 @@ printf "%-$(($COLUMNS-10))s"  " * Iniciando Tvheadend"
 case $SYSTEM in
 	1)
 		if [ "$SERVICES_MANAGEMENT" = "OLD" ]; then
-			"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" start 1>/dev/null 2>&1
+			"/var/packages/$(ls /var/packages/ | grep tvheadend)/scripts/start-stop-status" start 1>Tvheadend_Movistar-Spain.log 2>&1
 		else
-			start -q $TVHEADEND_SERVICE 2>/dev/null
+			start -q $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log
 		fi;;
 	2)
-		systemctl start $TVHEADEND_SERVICE 2>/dev/null;;
+		systemctl start $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 	3)
-		systemctl start $TVHEADEND_SERVICE 2>/dev/null;;
+		systemctl start $TVHEADEND_SERVICE 2>>Tvheadend_Movistar-Spain.log;;
 esac
 if [ $? -eq 0 ]; then
 	printf "%s$green%s$end%s\n" "[" "  OK  " "]"
@@ -657,8 +663,8 @@ fi
 
 
 if [ -f "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" ]; then
-	rm "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz"
+	rm "Configuracion_Tvheadend_$REMOTE_LIST_VERSION.tar.xz" 2>>Tvheadend_Movistar-Spain.log
 fi
 if [ -f "tv_grab_movistar-spain" ]; then
-	rm "tv_grab_movistar-spain"
+	rm "tv_grab_movistar-spain" 2>>Tvheadend_Movistar-Spain.log
 fi
