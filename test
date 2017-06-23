@@ -3,7 +3,7 @@
         {
             "package":"tvheadend",
             "version":"4.2.2-9",
-            "dname":"tvheadend1",
+            "dname":"Tvheadend-4.2",
             "desc":"Tvheadend compilado desde spksrc.",
             "maintainer":"manuelrn",
             "maintainer_url":"http://www.filebot.net/",
