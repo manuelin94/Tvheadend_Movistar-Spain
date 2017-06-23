@@ -1,0 +1,53 @@
+{
+    "packages":[
+        {
+            "package":"tvheadend",
+            "version":"4.2.2-9",
+            "dname":"tvheadend1",
+            "desc":"FileBot is the ultimate tool for organizing and renaming your Movies, TV Shows and Anime as well as fetching subtitles and artwork. It's smart and just works.",
+            "maintainer":"tvheadend2",
+            "maintainer_url":"http://www.filebot.net/",
+            "distributor":"tvheadend3",
+            "distributor_url":"http://www.filebot.net/",
+            "start":false,
+            "qstart":false,
+            "qinst":true,
+            "qupgrade":true,
+            "thumbnail":[
+                "https://app.filebot.net/syno/filebot-thumbnail.png"
+            ],
+            "snapshot":[
+                "https://app.filebot.net/syno/filebot-snapshot.png"
+            ],
+            "link":"https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/tvheadend_bromolow-5.2_4.2.2-9.spk",
+            "md5":"7cc9597acf80613032a5126a0b348999",
+            "sha256":"85FF6C06E605F1321CA55BE0B9835B62E3EAE5AF2E4C08CB6ADA32E53FBA4746",
+            "size":24535040
+        },
+        {
+            "package":"filebot-node",
+            "version":"0.2.4",
+            "dname":"FileBot Node",
+            "desc":"FileBot Node allows you to execute and schedule filebot calls via Synology DSM. FileBot Node requires Node.js and FileBot.",
+            "maintainer":"FileBot",
+            "maintainer_url":"http://www.filebot.net/",
+            "distributor":"FileBot",
+            "distributor_url":"http://www.filebot.net/",
+            "start":true,
+            "qstart":true,
+            "qinst":true,
+            "qupgrade":true,
+            "deppkgs":"filebot",
+            "thumbnail":[
+                "https://app.filebot.net/syno/filebot-node-thumbnail.png"
+            ],
+            "snapshot":[
+                "https://app.filebot.net/syno/filebot-node-snapshot.png"
+            ],
+            "link":"https://downloads.sourceforge.net/project/filebot/filebot-node/filebot-node-0.2.4/filebot-node-0.2.4-noarch.spk",
+            "md5":"b6afb326912ffb5c47870a881c4525b4",
+            "sha256":"78df4391f5c8b390505658139075054b586b9013073e414d507d9db7e2a76f99",
+            "size":665600
+        }
+    ]
+}
