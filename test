@@ -2,28 +2,6 @@
     "packages":[
         {
             "package":"tvheadend",
-            "version":"4.2.2-9",
-            "dname":"Tvheadend-4.2",
-            "desc":"Tvheadend compilado desde spksrc.",
-            "maintainer":"manuelrn",
-            "maintainer_url":"https://www.kodimania.com/viewtopic.php?f=58&t=8075",
-            "start":false,
-            "qstart":false,
-            "qinst":true,
-            "qupgrade":true,
-            "thumbnail":[
-                "http://s31.postimg.org/8urk8vdu3/logobig.png"
-            ],
-            "snapshot":[
-                "https://i.imgur.com/Cqfq8E6.png"
-            ],
-            "link":"https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/tvheadend_bromolow-5.2_4.2.2-9.spk",
-            "md5":"7cc9597acf80613032a5126a0b348999",
-            "sha256":"85FF6C06E605F1321CA55BE0B9835B62E3EAE5AF2E4C08CB6ADA32E53FBA4746",
-            "size":24535040
-        },
-        {
-            "package":"tvheadend",
             "version":"4.2.10-9",
             "dname":"Tvheadend-4.2",
             "desc":"Tvheadend compilado desde spksrc.",
@@ -40,6 +18,28 @@
                 "https://i.imgur.com/Cqfq8E6.png"
             ],
             "link":"https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/tvheadend_bromolow-5.2_4.2.10-9.spk",
+            "md5":"7cc9597acf80613032a5126a0b348999",
+            "sha256":"85FF6C06E605F1321CA55BE0B9835B62E3EAE5AF2E4C08CB6ADA32E53FBA4746",
+            "size":24535040
+        },
+        {
+            "package":"tvheadend",
+            "version":"4.2.2-9",
+            "dname":"Tvheadend-4.2",
+            "desc":"Tvheadend compilado desde spksrc.",
+            "maintainer":"manuelrn",
+            "maintainer_url":"https://www.kodimania.com/viewtopic.php?f=58&t=8075",
+            "start":false,
+            "qstart":false,
+            "qinst":true,
+            "qupgrade":true,
+            "thumbnail":[
+                "http://s31.postimg.org/8urk8vdu3/logobig.png"
+            ],
+            "snapshot":[
+                "https://i.imgur.com/Cqfq8E6.png"
+            ],
+            "link":"https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/tvheadend_bromolow-5.2_4.2.2-9.spk",
             "md5":"7cc9597acf80613032a5126a0b348999",
             "sha256":"85FF6C06E605F1321CA55BE0B9835B62E3EAE5AF2E4C08CB6ADA32E53FBA4746",
             "size":24535040
