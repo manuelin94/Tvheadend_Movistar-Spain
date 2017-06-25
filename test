@@ -22,7 +22,40 @@
             "sha256":"85FF6C06E605F1321CA55BE0B9835B62E3EAE5AF2E4C08CB6ADA32E53FBA4746",
             "size":24535040
         },
-        
+        {
+            "package":"tvheadend",
+            "version":"4.2.2-9",
+            "description":"Tvheadend is a TV streaming server and recorder for Linux, FreeBSD and Android supporting DVB-S, DVB-S2, DVB-C, DVB-T, ATSC, ISDB-T, IPTV, SAT IP and HDHomeRun as input sources. Tvheadend offers HTTP, HTSP and SAT IP streaming.",
+            "arch":"x86 braswell bromolow cedarview avoton"
+            "maintainer":"m4tt075",
+            "maintainer_url":"",
+            "distributor":"manuelrn",
+            "distributor_url":"https://www.kodimania.com/viewtopic.php?f=58&t=9665",
+            "firmware":"5.0-4458",
+            "report_url":"",
+            "reloadui":"yes",
+            "displayname":"Tvheadend-4.2",
+            "dsmuidir":"app",
+            "adminport":"9981",
+            "changelog":"Update to Tvheadend 4.2.2 (Release)",
+            "support_conf_folder":"yes",
+            "start":false,
+            "qstart":false,
+            "qinst":true,
+            "qupgrade":true,
+            "thumbnail":[
+                "http://s31.postimg.org/8urk8vdu3/logobig.png"
+            ],
+            "snapshot":[
+                "https://i.imgur.com/Cqfq8E6.png",
+                "https://i.imgur.com/5FdMHQT.png",
+                "https://i.imgur.com/3Dg8UAY.png"
+            ],
+            "link":"https://github.com/manuelin94/Tvheadend_Movistar-Spain/raw/master/tvheadend_bromolow-5.2_4.2.2-9.spk",
+            "md5":"7cc9597acf80613032a5126a0b348999",
+            "sha256":"85FF6C06E605F1321CA55BE0B9835B62E3EAE5AF2E4C08CB6ADA32E53FBA4746",
+            "size":24535040
+        },
         {
             "package":"filebot-node",
             "version":"0.2.4",
