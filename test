@@ -5,7 +5,7 @@
             "version":"4.2.2-10",
             "dname":"Tvheadend-4.2",
             "desc":"Tvheadend compilado desde spksrc.",
-            "maintainer":"manuelrn",
+            "maintainer":"manuelrn2",
             "maintainer_url":"https://www.kodimania.com/viewtopic.php?f=58&t=8075",
             "changelog":"Update to Tvheadend 4.2.2 (Release)",
             "start":false,
