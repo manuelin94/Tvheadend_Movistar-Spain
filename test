@@ -25,7 +25,6 @@
         {
             "package":"tvheadend",
             "version":"4.2.2-9",
-            "dname":"Tvheadend-4.2",
             "description":"Tvheadend is a TV streaming server and recorder for Linux, FreeBSD and Android supporting DVB-S, DVB-S2, DVB-C, DVB-T, ATSC, ISDB-T, IPTV, SAT IP and HDHomeRun as input sources. Tvheadend offers HTTP, HTSP and SAT IP streaming.",
             "arch":"x86 braswell bromolow cedarview avoton"
             "maintainer":"m4tt075",
@@ -35,7 +34,7 @@
             "firmware":"5.0-4458",
             "report_url":"",
             "reloadui":"yes",
-            "displayname":"Tvheadend",
+            "displayname":"Tvheadend-4.2",
             "dsmuidir":"app",
             "adminport":"9981",
             "changelog":"Update to Tvheadend 4.2.2 (Release)",
